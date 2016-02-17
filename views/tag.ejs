@@ -1,0 +1,15 @@
+<h1><%= favorite.title %></h1>
+
+<form method="POST">
+  <div class="form-group">
+    <input type="text" name="tag" class="form-control" placeholder="Your tag">
+  </div>
+  <input type="submit" class="btn btn-primary">
+</form>
+
+<% favorite.tags.forEach(function(tag) { %>
+<div class="well">
+  <p><%= tag.tag %></p>
+  
+</div>
+<% }); %>
