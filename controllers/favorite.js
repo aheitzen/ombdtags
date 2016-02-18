@@ -67,12 +67,10 @@ router.post('/:id/addTag', function(req, res) {
       id: req.params.id
     }
   }).then(function(favorite){
-    favorite.addTag({
-      where: {
+      favorite.createTag({
         tag: req.body.tag
-      }
-    }).then(function() {
-      res.redirect('/favorites/' + req.params.id + '/addTag');
+    }).then(function(tag){
+        res.redirect('/favorites/' + req.params.id + '/addTag');
     })
   })
 });
