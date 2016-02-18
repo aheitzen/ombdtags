@@ -54,20 +54,27 @@ router.post('/:id/comments', function(req, res) {
 router.get('/:id/addTag', function(req, res) {
   var favoriteId = req.params.id;
   db.favorite.find({
-    whre: {id: favoriteId},
-    inlcude: [db.tag]
+    where: {id: favoriteId},
+    include: [db.tag]
   }).then(function(fav) {
     res.render('tag.ejs', {favorite: fav});
-  });
+  })
 });
 
 router.post('/:id/addTag', function(req, res) {
-  db.tag.create({
-    tag: req.body.tag,
-    favoriteId: req.params.id
-  }).then(function() {
-    res.redirect('/favorites/' + req.params.id + '/addTag');
-  });
+  db.favorite.findOne({
+    where: {
+      id: req.params.id
+    }
+  }).then(function(favorite){
+    favorite.addTag({
+      where: {
+        tag: req.body.tag
+      }
+    }).then(function() {
+      res.redirect('/favorites/' + req.params.id + '/addTag');
+    })
+  })
 });
 
 router.delete('/:imdbID', function(req, res) {
@@ -79,7 +86,7 @@ router.delete('/:imdbID', function(req, res) {
     res.send({'msg': 'success'});
   }).catch(function(e) {
     res.send({'msg': 'error', 'error': e});
-  });
+  })
 });
 
 
